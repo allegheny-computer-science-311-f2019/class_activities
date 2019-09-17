@@ -1,0 +1,123 @@
+// SimpleRobot.java
+// 
+// A simple robot controller, based on the original 
+// code by Simon Parsons & Davide Grossi, 2013.
+//
+// Terry Payne
+// 6th October 2017
+//
+// This demo provides access to the different sensors available on
+// a simple robot (with raw access to the motors, rather than using
+// a pilot), and provides access to sensor data.
+// Note that it currently does not provide methods to control the
+// motor for the distance sensor
+
+import lejos.hardware.Brick;
+import lejos.hardware.BrickFinder;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.robotics.SampleProvider;
+
+public class SimpleRobot {
+	
+	private EV3TouchSensor leftBump, rightBump;
+	private EV3UltrasonicSensor ultraSensor;
+	private EV3ColorSensor cSensor;
+	private SampleProvider leftSP, rightSP, distSP, colourSP;	
+	private float[] leftSample, rightSample, distSample, colourSample; 
+	private EV3LargeRegulatedMotor motorL, motorR;
+	// private EV3MediumRegulatedMotor motorS;
+	
+	public SimpleRobot() {
+		Brick myEV3 = BrickFinder.getDefault();
+
+		leftBump = new EV3TouchSensor(myEV3.getPort("S2"));
+		rightBump = new EV3TouchSensor(myEV3.getPort("S1"));
+		ultraSensor = new EV3UltrasonicSensor(myEV3.getPort("S3"));
+		cSensor = new EV3ColorSensor(myEV3.getPort("S4"));
+
+		leftSP = leftBump.getTouchMode();
+		rightSP = rightBump.getTouchMode();
+		distSP = ultraSensor.getDistanceMode(); 		// effective range of the sensor in Distance mode is about 5 to 50 centimeters
+		colourSP = cSensor.getRGBMode();
+		
+		leftSample = new float[leftSP.sampleSize()];		// Size is 1
+		rightSample = new float[rightSP.sampleSize()];		// Size is 1
+		distSample = new float[distSP.sampleSize()];		// Size is 1
+		colourSample = new float[colourSP.sampleSize()];	// Size is 3
+
+		motorL = new EV3LargeRegulatedMotor(myEV3.getPort("B"));
+		motorR = new EV3LargeRegulatedMotor(myEV3.getPort("C"));
+		// motorS = new EV3MediumRegulatedMotor(myEV3.getPort("A"));
+
+	}
+	
+	public void closeRobot() {
+		leftBump.close();
+		rightBump.close();
+		ultraSensor.close();
+		cSensor.close();
+	}
+
+
+	public boolean isLeftBumpPressed() {
+    	leftSP.fetchSample(leftSample, 0);
+    	return (leftSample[0] == 1.0);
+	}
+	
+	public boolean isRightBumpPressed() {
+    	rightSP.fetchSample(rightSample, 0);
+    	return (rightSample[0] == 1.0);
+	}
+	
+	public float getDistance() {
+    	distSP.fetchSample(distSample, 0);
+    	return distSample[0];
+	}
+
+	public float[] getColour() {
+    	colourSP.fetchSample(colourSample, 0);
+    	return colourSample;	// return array of 3 colours
+	}
+
+    // We can go straight ahead
+    public void startMotors(){
+    	motorL.forward();
+    	motorR.forward();
+    }
+	
+    // We can go straight back
+    public void reverseMotors(){
+    	motorL.backward();
+    	motorR.backward();
+	}
+
+    // We can turn in place, clockwise or anticlockwise
+    public void turnMotors(boolean clockwise){
+	if(clockwise){
+		motorL.forward();
+		motorR.backward();
+	}
+	else{
+		motorL.backward();
+		motorR.forward();	    
+	}
+    }
+
+    // We can turn off the motors
+    public void stopMotors(){
+    	motorL.stop(true);
+    	motorR.stop();
+    }
+
+	public boolean isRightMotorOn() {
+    	return motorR.isMoving();
+	}
+	
+	public boolean isLeftMotorOn() {
+    	return motorL.isMoving();
+	}
+}

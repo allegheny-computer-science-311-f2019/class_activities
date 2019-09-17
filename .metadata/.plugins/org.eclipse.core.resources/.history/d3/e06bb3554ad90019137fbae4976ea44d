@@ -1,0 +1,44 @@
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.robotics.RangeFinderAdapter;
+import lejos.robotics.chassis.Chassis;
+import lejos.robotics.chassis.Wheel;
+import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.mapping.EV3NavigationModel;
+import lejos.robotics.navigation.MovePilot;
+import lejos.robotics.objectdetection.RangeFeatureDetector;
+import lejos.utility.Delay;
+
+/** Example of using Chassis and MovePilot.
+ * Ref: https://lejosnews.wordpress.com/2015/05/12/lejos-navigation-the-chassis/
+ * Ref for navigation: https://lejosnews.wordpress.com/2015/01/19/lejos-navigation-navigation-model/
+ * 
+ * @author Janyl Jumadinova
+ *
+ */
+public class MovementPilot {
+	public static final float MAX_DISTANCE = 50f;
+    public static final int DETECTOR_DELAY = 1000;
+    
+    /** Main method with declarations and statements for
+     * simple movements (travel and rotation) of MovePilot 
+     * @param args
+     */
+    public static void main(String[] args) {
+	
+    	Wheel left = WheeledChassis.modelWheel(Motor.A, 42.2).offset(72).gearRatio(2);
+    	Wheel right = WheeledChassis.modelWheel(Motor.B, 42.2).offset(-72).gearRatio(2);
+    	Chassis myChassis = new WheeledChassis( new Wheel[]{left, right}, WheeledChassis.TYPE_DIFFERENTIAL);
+    
+    	MovePilot pilot = new MovePilot(myChassis);
+    	System.out.println("Travelling");
+    	pilot.travel(50);
+    	Delay.msDelay(100);
+    	pilot.rotate(90);
+    	Delay.msDelay(100);
+    	pilot.travel(100);
+    	System.out.println("Stopped");
+    
+  }
+}

@@ -9,7 +9,7 @@ import lejos.utility.Delay;
  * Ref: https://lejosnews.wordpress.com/2015/05/12/lejos-navigation-the-chassis/
  * 
  * @author Janyl Jumadinova
- *
+ * @bugs program is incomplete, shutting down options are not present 
  */
 public class MovementPilot {
   

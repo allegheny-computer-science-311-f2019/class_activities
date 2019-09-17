@@ -1,0 +1,70 @@
+import lejos.hardware.Button;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.Font;
+import lejos.hardware.lcd.GraphicsLCD;
+import lejos.hardware.motor.Motor;
+import lejos.robotics.chassis.Chassis;
+import lejos.robotics.chassis.Wheel;
+import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.localization.OdometryPoseProvider;
+import lejos.robotics.navigation.MovePilot;
+
+/* SimplePose.java
+*
+* This demonstrates some uses of the OdometryPoseProvider
+* class.  Based on Davide Grossi's PoseProvider code.
+*
+* @author Terry Payne, modified by Janyl Jumadinova
+* September 17, 2019
+*/
+public class SimplePose {
+	
+    /** main method that sets up the pilot and 
+     * execute actions for navigation while tracking poses.
+    */	
+	public static void main(String[] args) {
+		// Set up the move pilot for our robot
+		Wheel leftWheel = WheeledChassis.modelWheel(Motor.B, 3.3).offset(-10.0);
+		Wheel rightWheel = WheeledChassis.modelWheel(Motor.C, 3.3).offset(10.0);
+		Chassis myChassis = new WheeledChassis( new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
+        MovePilot pilot = new MovePilot(myChassis);
+
+		// Create a pose provider and link it to the move pilot
+        OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
+
+        GraphicsLCD lcd = LocalEV3.get().getGraphicsLCD();
+
+		// Display Title
+		lcd.clear();
+		lcd.setFont(Font.getDefaultFont());
+		lcd.drawString("Simple Pose", lcd.getWidth()/2, 0, GraphicsLCD.HCENTER);
+		lcd.setFont(Font.getSmallFont());
+		lcd.drawString("Pose (1): " + opp.getPose(), 10, 20, 0);
+		lcd.drawString("Press any button to start ", 0, 30, 0);
+		Button.waitForAnyPress();
+		pilot.travel(30);
+		lcd.drawString("Pose (2): " + opp.getPose(), 10, 40, 0);
+		
+		lcd.drawString("Press any button to continue ", 0, 50, 0);
+		Button.waitForAnyPress();
+		pilot.rotate(90);
+		lcd.drawString("Pose (3): " + opp.getPose(), 10, 60, 0);
+		pilot.travel(20);
+		lcd.drawString("Pose (4): " + opp.getPose(), 10, 70, 0);
+		
+		lcd.drawString("Press any button to continue ", 0, 80, 0);
+		Button.waitForAnyPress();
+		pilot.rotate(90);
+		lcd.drawString("Pose (5): " + opp.getPose(), 10, 90, 0);
+		pilot.travel(30);
+		pilot.rotate(-180);
+		lcd.drawString("Pose (6): " + opp.getPose(), 10, 100, 0);
+
+
+		// Wait to be told to exit
+		lcd.drawString("Press any button to exit ", 0, 120, 0);
+		Button.waitForAnyPress();
+
+	}
+
+}
