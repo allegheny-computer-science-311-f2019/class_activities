@@ -12,7 +12,11 @@ When the course instructor provides the new material for the in-class activity,
  you can type this command in the main directory for this repository:
 
 ```
+<<<<<<< HEAD
 git remote add download git@https://github.com/allegheny-computer-science-311-f2019/class_activities
+=======
+git remote add download git@github.com:allegheny-computer-science-311-f2019/class_activities.git
+>>>>>>> 82253621327eec5a6886dc8583f0768204e21ec7
 ```
 
 You should only need to type this command once; typing the command additional

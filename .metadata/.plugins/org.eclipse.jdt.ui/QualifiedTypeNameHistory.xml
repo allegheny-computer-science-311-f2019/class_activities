@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="lejos.robotics.mapping.EV3NavigationModel"/>
+    <fullyQualifiedTypeName name="lejos.robotics.navigation.Navigator"/>
+    <fullyQualifiedTypeName name="lejos.robotics.RangeFinderAdapter"/>
+    <fullyQualifiedTypeName name="lejos.hardware.port.SensorPort"/>
+    <fullyQualifiedTypeName name="lejos.hardware.sensor.EV3UltrasonicSensor"/>
+    <fullyQualifiedTypeName name="lejos.robotics.objectdetection.RangeFeatureDetector"/>
+    <fullyQualifiedTypeName name="lejos.robotics.localization.BeaconTriangle"/>
+    <fullyQualifiedTypeName name="lejos.robotics.localization.BeaconLocator"/>
+</qualifiedTypeNameHistroy>
